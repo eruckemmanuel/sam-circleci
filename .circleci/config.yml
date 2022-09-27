@@ -11,7 +11,7 @@ jobs:
       - run: 
           name: Run sam local api
           command: sam local start-api
-          background: false
+          background: true
       - run: sleep 4m
 
       - run: 
