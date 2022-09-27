@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cypress/base:18.6.0
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run:
+          name: Download SAM
+          command: wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+      
+      - run:
+          name: Unzip SAM ZIP package
+          command: unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
+      
+      - run:
+          name: Install SAM
+          command: ./sam-installation/install
+      - run:
+          name: Install node packages
+          command: npm install --frozen-lockfile
+      
+      - run: 
+          name: Start SAM instance
+          command: sam local start-lambda
+          background: true
+      - run: sleep 1m
+      - run:
+          name: "Run lambda test tests"
+          command: npm run test
+          no_output_timeout: "2m"
+      - store_artifacts:
+          path: cypress/screenshots
+      - store_artifacts:
+          path: cypress/videos
