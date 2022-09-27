@@ -8,8 +8,11 @@ jobs:
     steps:
       - checkout
       - sam/install
-      - run: sam local start-api
-      - run: sleep 1m
+      - run: 
+          name: Run sam local api
+          command: sam local start-api
+          background: false
+      - run: sleep 4m
 
       - run: 
           name: Navigate to app directory
