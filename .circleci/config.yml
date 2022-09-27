@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 orbs:
   sam: circleci/aws-sam-serverless@3.2.0
 jobs:
