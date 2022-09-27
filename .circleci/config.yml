@@ -7,8 +7,8 @@ jobs:
     executor: sam/default
     steps:
       - checkout
-      - sam/install
-      - sam/local-start-lambda
+      - samaws-serverless/install
+      - samaws-serverless/local-start-lambda
       - run: sleep 1m
 
       - run: 
