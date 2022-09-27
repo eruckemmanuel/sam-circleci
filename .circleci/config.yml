@@ -7,8 +7,8 @@ jobs:
     executor: sam/default
     steps:
       - checkout
-      - aws-serverless/install
-      - aws-serverless/local-start-lambda
+      - sam/install
+      - run: sam local start-api
       - run: sleep 1m
 
       - run: 
