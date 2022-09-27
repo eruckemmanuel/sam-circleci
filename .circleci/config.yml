@@ -12,19 +12,15 @@ jobs:
           name: Run sam local api
           command: sam local start-api
           background: true
-      - run: sleep 4m
-
-      - run: 
-          name: Navigate to app directory
-          command: cd hello-world 
+      - run: sleep 1m
 
       - run:
           name: Install Node packages
-          command: npm install --frozen-lockfile
+          command: npm --prefix hello-world/ install --frozen-lockfile
 
       - run:
           name: "Run lambda test"
-          command: npm run test
+          command: npm --prefix hello-world/ run test
           no_output_timeout: "2m"
       - store_artifacts:
           path: cypress/screenshots
