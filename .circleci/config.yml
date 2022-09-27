@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  sam: circleci/aws-sam-serverless@3.2.0
 jobs:
   build:
     docker:
@@ -6,26 +8,21 @@ jobs:
     working_directory: ~/app
     steps:
       - checkout
-      - run:
-          name: Install linux dependencies
-          command: apt-get update && apt-get install wget unzip -y
-      - run:
-          name: Download SAM
-          command: wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-      
-      - run:
-          name: Unzip SAM ZIP package
-          command: unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
-      
-      - run:
-          name: Install SAM
-          command: ./sam-installation/install
-      
       - run: 
           name: Start SAM instance
           command: sam local start-lambda
           background: true
+
       - run: sleep 1m
+
+      - run: 
+          name: Navigate to app directory
+          command: cd hello-world 
+
+      - run:
+          name: Install Node packages
+          command: npm install --frozen-lockfile
+
       - run:
           name: "Run lambda test tests"
           command: npm run test
