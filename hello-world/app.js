@@ -1,6 +1,11 @@
-// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
-let response;
+const AWS = require('aws-sdk'); 
+const crypto = require('crypto');
+
+const docClient = process.env.AWS_SAM_LOCAL ? new AWS.DynamoDB.DocumentClient({
+  endpoint: "http://host.docker.internal:8000"
+}) : new dynamodb.DocumentClient()
+
+
 
 /**
  *
@@ -15,19 +20,52 @@ let response;
  * 
  */
 exports.lambdaHandler = async (event, context) => {
-    try {
-        // const ret = await axios(url);
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'hello world',
-                // location: ret.data.trim()
-            })
-        }
-    } catch (err) {
-        console.log(err);
-        return err;
+    const payload = JSON.parse(event.body);
+
+    const leadId = crypto.randomUUID();
+
+    const data = {
+        "leadName": payload.name,
+        "phoneNumber": payload.phoneNumber,
+        "serviceType": payload.serviceType,
+        "consent": payload.consent,
+        "consentTimeStamp": payload.consentTimeStamp,
+        "origin": payload.origin,
+        "additionalProps": payload.additionalProps
     }
 
-    return response
+
+    const params = {
+        TableName: process.env.PAYCARD_CHATBOT_LEADS_TABLE,
+        Item: {
+            ...data,
+            leadId,
+            created: new Date().toISOString()
+        }
+    };
+
+    let responseBody = null;
+
+    try {
+        console.log("creating lead, ", documentClient);
+        console.log(params, 'the params');
+        const data = await documentClient.put(params).promise();
+        responseBody = {
+            statusCode: 200,
+            body: JSON.stringify({
+                leadId,
+                message: "Chatbot lead has been created successfully"
+            })
+        };
+    } catch (err) {
+        console.log("Error Creating, Error Response", err);
+        responseBody = {
+            statusCode: 500,
+            body: JSON.stringify(err)
+        };
+    }
+
+    console.log("*** API Response ***", responseBody);
+
+    return responseBody;
 };
