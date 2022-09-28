@@ -1,5 +1,5 @@
 {
-  "body": "{\"message\": \"hello world\"}",
+  "body": "{\"name\": \"James\", \"phoneNumber\": \"+23548458745\",}",
   "resource": "/{proxy+}",
   "path": "/path/to/resource",
   "httpMethod": "POST",
@@ -8,7 +8,7 @@
     "foo": "bar"
   },
   "pathParameters": {
-    "proxy": "/path/to/resource"
+    "proxy": "/leads"
   },
   "stageVariables": {
     "baz": "qux"
@@ -36,7 +36,7 @@
   "requestContext": {
     "accountId": "123456789012",
     "resourceId": "123456",
-    "stage": "prod",
+    "stage": "test",
     "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
     "requestTime": "09/Apr/2015:12:34:56 +0000",
     "requestTimeEpoch": 1428582896000,
@@ -53,7 +53,7 @@
       "userAgent": "Custom User Agent String",
       "user": null
     },
-    "path": "/prod/path/to/resource",
+    "path": "/leads",
     "resourcePath": "/{proxy+}",
     "httpMethod": "POST",
     "apiId": "1234567890",

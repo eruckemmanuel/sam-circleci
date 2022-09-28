@@ -7,25 +7,25 @@ const expect = chai.expect;
 var event, context;
 
 describe('Tests index', function () {
-    it('verifies successful response', async () => {
-        const result = await app.lambdaHandler(event, context)
-
-        expect(result).to.be.an('object');
-        expect(result.statusCode).to.equal(200);
-        expect(result.body).to.be.an('string');
-
-        let response = JSON.parse(result.body);
-
-        expect(response).to.be.an('object');
-        expect(response.message).to.be.equal("hello world");
-        // expect(response.location).to.be.an("string");
-    });
     it("verifies successful response from through API", async () => {
-        const url = "http://localhost:3000/hello";
+        let data = {
+            "name": "John Broklyn",
+            "phoneNumber": "0761234567",
+            "serviceType": "Movie",
+            "consent": "NO",
+            "consentTimeStamp": "22/11/2020 12:53:29 PM",
+            "origin": "DEV",
+            "additionalProps": {
+                "city": "New York",
+                "country": "USA"
+            }
+        }
+        const url = "http://localhost:3000/leads";
 
-        let response = await axios.get(url);
+        let response = await axios.post(url, data=JSON.stringify(data));
+
+        console.log(response.data);
 
         expect(response.status).to.be.equal(200);
-        expect(response.data.message).to.be.equal("hello world");
     });
 });

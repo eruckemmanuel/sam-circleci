@@ -27,7 +27,7 @@ Resources:
             TableName: !Ref HelloWorldDynamoDB
       Environment:
         Variables:
-          SAMPLE_TABLE: !Ref HelloWorldDynamoDB
+          PAYCARD_CHATBOT_LEADS_TABLE: !Ref HelloWorldDynamoDB
           AWS_SAM_LOCAL: True
       Events:
         HelloWorld:
@@ -61,7 +61,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/leads/"
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
