@@ -1,11 +1,6 @@
 const AWS = require('aws-sdk'); 
 const crypto = require('crypto');
 
-const docClient = process.env.AWS_SAM_LOCAL ? new AWS.DynamoDB.DocumentClient({
-  endpoint: "http://host.docker.internal:8000"
-}) : new dynamodb.DocumentClient()
-
-
 
 /**
  *
@@ -20,6 +15,10 @@ const docClient = process.env.AWS_SAM_LOCAL ? new AWS.DynamoDB.DocumentClient({
  * 
  */
 exports.lambdaHandler = async (event, context) => {
+    const docClient = process.env.AWS_SAM_LOCAL ? new AWS.DynamoDB.DocumentClient({
+        endpoint: "http://host.docker.internal:8000"
+    }) : new AWS.DynamoDB.DocumentClient();
+
     const payload = JSON.parse(event.body);
 
     const leadId = crypto.randomUUID();
@@ -32,7 +31,9 @@ exports.lambdaHandler = async (event, context) => {
         "consentTimeStamp": payload.consentTimeStamp,
         "origin": payload.origin,
         "additionalProps": payload.additionalProps
-    }
+    };
+
+    console.log(data, 'the data received');
 
 
     const params = {
